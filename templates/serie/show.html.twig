@@ -1,0 +1,10 @@
+{% extends '/base.html.twig' %}
+
+{% block body %}
+    <h1>Affichage du détail d'une série !</h1>
+{% endblock %}
+
+{% block title %}
+    {# parent() récupère le contenu du bloc parent #}
+    {{ parent() }} | Show
+{% endblock %}
