@@ -60,4 +60,23 @@ class SerieRepository extends ServiceEntityRepository
             $query->setMaxResults(50);
             return $query->getResult();
         }
+
+    public function findSeriesWithPagination(int $page){
+        $qb = $this-> createQueryBuilder('s');
+        $qb -> addOrderBy('s.popularity', 'DESC');
+
+        $query = $qb->getQuery();
+        $query->setMaxResults(Serie::MAX_RESULT);
+
+        //1*48-48=0
+        //2*48-48=48
+        //(page - 1) * 48
+        //offset
+
+        $offset = ($page -1 ) * Serie::MAX_RESULT;
+        $query->setFirstResult($offset);
+        return $query->getResult();
+    }
+
+
 }

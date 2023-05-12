@@ -1,7 +1,10 @@
 {% extends '/base.html.twig' %}
 
 {% block body %}
-    <h1>Ajouter une série </h1>
+    {% embed 'views/form/serie_form.html.twig' with {'serieForm' : serieForm2 }%}
+        {% block h2 %}Add a new  serie {% endblock  %}
+        {% block buttonLabel %}Add a new one {% endblock %}
+    {% endembed %}
 {% endblock %}
 
 {% block title %}

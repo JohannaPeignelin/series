@@ -10,6 +10,17 @@
 
         {% endfor %}
     </section>
+    <div class="flex_between flex_div">
+        {% if currentPage > 1 %}
+            <a href="{{ path('serie_list', {'page': currentPage - 1 }) }}" class="link_button">Previous page</a>
+        {% else %}
+            <div></div>
+        {% endif %}
+        {% if currentPage < maxPage%}
+        <a href="{{ path('serie_list', {'page': currentPage + 1 }) }}" class="link_button">Next page</a>
+        {% endif %}
+    </div>
+
 {% endblock %}
 
 {% block title %}
