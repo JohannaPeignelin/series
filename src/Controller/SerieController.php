@@ -19,7 +19,7 @@ class SerieController extends AbstractController
         //TODO : renvoyer la liste des series
 //        $series = $serieRepository->findAll();
 
-        $series = $serieRepository->findBy([],["vote"=>"DESC"],50);
+        $series = $serieRepository->findBestSeries();
         dump($series);
         return $this->render('serie/list.html.twig',[
             'series' => $series
@@ -30,8 +30,11 @@ class SerieController extends AbstractController
     public function show(int $id, SerieRepository $serieRepository): Response
     {
 
-        //TODO : renvoyer le detail d'une serie
         $serie = $serieRepository->find($id);
+
+        if(!$serie){
+            throw $this->createNotFoundException("Oops ! Serie not found ! ");
+        }
 
         return $this->render('serie/show.html.twig', [
             'serie' => $serie
