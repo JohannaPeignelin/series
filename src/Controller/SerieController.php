@@ -69,7 +69,8 @@ class SerieController extends AbstractController
         //permet d'extraire les données de la requête
         $serieForm ->handleRequest($request);
 
-        if ($serieForm->isSubmitted()){
+        //on rentre dans le if si appui sur submit et si les asserts sont valides
+        if ($serieForm->isSubmitted() && $serieForm->isValid()){
             //traitement de la donnée
             //récupération des champs non mapped
             $genres = $serieForm->get('genres')->getData();
@@ -97,4 +98,17 @@ class SerieController extends AbstractController
         ]);
     }
 
+    #[Route('/delete/{id}', name: 'delete', requirements: ['id' => '\d+'])]
+    public function delete(int $id, SerieRepository $serieRepository){
+        $serie = $serieRepository->find($id);
+
+
+        //suppression de la série
+        $serieRepository->remove($serie, true);
+
+
+        $this->addFlash('success', $serie->getName()."has been removed ! ");
+
+        return $this->redirectToRoute('main_home');
+    }
 }

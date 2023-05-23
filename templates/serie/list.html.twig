@@ -4,7 +4,7 @@
     <h1>List of Series !</h1>
     <section class="series-list">
         {% for serie in series %}
-            <a href="{{ path('serie_show', {'id': serie.id}) }}" title="View details about {{ serie.name }}">
+            <a href="{{ path('serie_show', {'id': serie.id}) }}" title="View details about {{ serie.name }} | seasons : {{ serie.seasons | length}}">
                 <img src="{{ asset('img/posters/series/' ~ serie.poster) }}" alt="{{ serie.name }}">
             </a>
 

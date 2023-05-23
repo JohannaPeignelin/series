@@ -29,10 +29,12 @@ a {
 }
 
 .link_button{
-    border: 2px solid blueviolet;
+    border: 2px solid #0b0101;
     margin: 5px;
     padding: 5px;
     border-radius: 30% 5%;
+    background-color: #000000;
+
 }
 
 a:hover {
@@ -72,8 +74,10 @@ nav li {
     margin-right: 1rem; /*pourcentage de taille en fonction du zoom 1 rem = 10px pour zoom = 100%*/
 }
 
-
-
+.error ul li{
+    color: red;
+    list-style-type: none;
+}
 
 /********************** Module  5  Doctrine   **************************/
 
@@ -84,6 +88,7 @@ nav li {
 }
 
 .serie-details {
+    margin-top: 20px;
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 30px;

@@ -4,6 +4,8 @@
     <h1>Affichage du détail d'une série !</h1>
     <section>
         <a href="{{ path('serie_update', {'id': serie.id}) }}" class="link_button">Edit</a>
+        <a href="{{ path('season_add', {'id': serie.id}) }}" class="link_button">Add season</a>
+        <a href="{{ path('serie_delete', {'id': serie.id}) }}" class="link_button" onclick="return confirm('Are you sure to delete {{ serie.name }} ? ')">Delete</a>
         <div class="serie-details">
             <div>
                 <img src="{{ asset('img/posters/series/'~ serie.poster) }}" alt="{{ serie.name }}">
@@ -18,6 +20,19 @@
                 <div> {{ serie.overview | nl2br }}</div>
             </div>
         </div>
+    </section>
+    <section class="seasons">
+        <h3>Seasons</h3>
+        {% for season in serie.seasons %}
+            <article>
+                <img src="{{ asset('img/posters/seasons/' ~ season.poster) }}" alt="{{ serie.name }} #{{ season.number }}">
+                <div>
+                    <h4>#{{ season.number }}</h4>
+                    <div>Aired from {{ season.firstAirDate | date('Y-m-d')}}</div>
+                    <div>{{ season.overview }}</div>
+                </div>
+            </article>
+        {% endfor %}
     </section>
 {% endblock %}
 
