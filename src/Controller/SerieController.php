@@ -6,6 +6,7 @@ use App\Entity\Serie;
 use App\Form\SerieType;
 use App\Repository\SerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +46,6 @@ class SerieController extends AbstractController
     #[Route('/detail/{id}', name: 'show', requirements: ["id" => "\d+"])]
     public function show(int $id, SerieRepository $serieRepository): Response
     {
-
         $serie = $serieRepository->find($id);
 
         if(!$serie){
@@ -58,6 +58,7 @@ class SerieController extends AbstractController
         ]);
     }
 
+    #[IsGranted("ROLE_USER")]
     #[Route('/add', name: 'add')]
     public function add(Request $request, SerieRepository $serieRepository): Response
     {
@@ -102,13 +103,10 @@ class SerieController extends AbstractController
     public function delete(int $id, SerieRepository $serieRepository){
         $serie = $serieRepository->find($id);
 
-
         //suppression de la série
         $serieRepository->remove($serie, true);
 
-
         $this->addFlash('success', $serie->getName()."has been removed ! ");
-
         return $this->redirectToRoute('main_home');
     }
 }
