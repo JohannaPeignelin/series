@@ -6,6 +6,7 @@ use App\Entity\Season;
 use App\Form\SeasonType;
 use App\Repository\SeasonRepository;
 use App\Repository\SerieRepository;
+use App\Tools\Uploader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +23,7 @@ class SeasonController extends AbstractController
                         SerieRepository $serieRepository,
                         Request $request,
                         EntityManagerInterface $entityManager,
+                        Uploader $uploader,
                         int $id): Response
     {
         //récupération de l'instance de la série
@@ -43,11 +45,10 @@ class SeasonController extends AbstractController
 
 
             if($file){
-                //on pourrait utiliser un slugger qui sert a nettoyer le lien
-                $newFileName = $season->getSerie()->getName().
-                    " - ".$season->getNumber()."-".uniqid().".".$file->guessExtension();
+                // on fait appel a notre service Uploader
+                $newFileName = $uploader-> save($file,
+                    $season->getSerie()->getName().'-'.$season->getNumber(), $this->getParameter('upload_season_poster'));
 
-                $file->move('img/posters/seasons',$newFileName);
                 $season->setPoster($newFileName);
 
             }
