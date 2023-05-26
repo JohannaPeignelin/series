@@ -17,7 +17,6 @@ class SerieController extends AbstractController
     public function retrieveAll(SerieRepository $serieRepository): Response
     {
        $series = $serieRepository->findAll();
-
        return $this->json($series, 200, [],['groups'=>'serie_data']);
     }
 
@@ -31,9 +30,28 @@ class SerieController extends AbstractController
     {
 
     }
+
+
     #[Route('/{id}', name: 'update_one',methods: ['PUT'])]
-    public function updateOne(): Response
+    public function updateOne(int $id, Request $request, SerieRepository $serieRepository): Response
     {
+        $serie = $serieRepository->find($id);
+
+        if ($serie){
+            //fonction PHP permet de transformer une cdc en format json en objet anonyme PHP
+            $data = json_decode($request->getContent());
+            //en php 1 vaut vrai, 0 vaut faux
+            if ($data->value){
+                $serie->setNbLike($serie->getNbLike() + 1);
+            }else {
+                $serie->setNbLike($serie->getNbLike() -1);
+            }
+            $serieRepository->save($serie, true);
+
+            return $this->json(['nbLike'=>$serie->getNbLike()]);
+        }
+
+        return $this->json(['error' => 'Serie not found ! ']);
 
     }
 
@@ -46,7 +64,6 @@ class SerieController extends AbstractController
         //dd renvoie un dump and die
         dd($serie);
     }
-
 
 
 }

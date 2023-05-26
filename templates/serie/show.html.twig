@@ -18,6 +18,11 @@
                 <div>Aired from {{ serie.firstAirDate | date('Y-m-d')}} to {{ serie.lastAirDate | date('Y-m-d') }}</div>
     {#            insère un retour à la ligne HTML à chauqe nouvelle ligne #}
                 <div> {{ serie.overview | nl2br }}</div>
+                <div class="flex_div">
+                    <button class="like_button" value="1">Like</button>
+                    <button class="like_button" value="0">Dislike</button>
+                    <div><span id="nbLike">{{ serie.nbLike }} </span> Likes</div>
+                </div>
             </div>
         </div>
     </section>
@@ -47,4 +52,36 @@
 {% block title %}
     {# parent() récupère le contenu du bloc parent #}
     {{ parent() }} | Show
+{% endblock %}
+
+{% block extraJs %}
+    <script>
+
+        let buttons = Array.from(document.getElementsByClassName('like_button'))
+        buttons.forEach(function (button){
+
+            button.addEventListener("click", function () {
+
+                let value = {'value' : this.value}
+
+            //fetch nouvelle methode javascript remplace html http request
+                //renvoie une promesse, objet particulier qui nous previent quand notre objet revient
+            fetch("{{ path('api_serie_update_one', {'id' : serie.id}) }}",
+                {method :'PUT', body : JSON.stringify(value)})
+                //qu'est ce que je fais une fois que ma promesse revient ?
+                //requete dans son entierete, qd le truc revient, je dois extraire les données de
+                //requete. On va donc avoir une Response (expression reguliere)
+                //then() me permet de lancer une callback au retour de ma requête
+                //j'extraie ici le corps de ma requête à savoir le json
+                .then(response => response.json())
+                //equivaut à
+                //.then(function(response){return response.json())
+                //le second then récupère le json en paramètre afin d'en faire le traitement
+                .then(function(data){
+                    document.getElementById('nbLike').innerText = data.nbLike
+                })
+            })
+        })
+
+    </script>
 {% endblock %}
